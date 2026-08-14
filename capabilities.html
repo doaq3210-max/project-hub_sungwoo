@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sungwoo's Project — Capabilities</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  :root {
+    --bg: #14161A;
+    --panel: #1C2026;
+    --rule: #2C323A;
+    --text: #F2F4F6;
+    --text-dim: #8A93A0;
+    --accent: #2FB3C9;
+    --arrived: #4FBF7B;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  body {
+    font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  a { color: inherit; }
+
+  /* header */
+  .board-header {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 32px 32px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    color: var(--text);
+  }
+
+  .nav-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    color: var(--text-dim);
+    transition: color 80ms ease-out;
+  }
+
+  .nav-link:hover,
+  .nav-link:focus-visible { color: var(--accent); }
+
+  .section-label {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 24px 32px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--text-dim);
+  }
+
+  main {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 16px 32px 96px;
+  }
+
+  h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: 28px;
+    letter-spacing: 0.02em;
+    margin: 8px 0 40px;
+  }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+
+  .panel h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin: 0 0 14px;
+  }
+
+  .panel p {
+    font-size: 16px;
+    line-height: 1.75;
+    max-width: 70ch;
+    margin: 0 0 12px;
+  }
+
+  .panel p:last-child { margin-bottom: 0; }
+
+  .panel ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 16px;
+    line-height: 1.75;
+    max-width: 70ch;
+  }
+
+  .panel li { margin-bottom: 6px; }
+  .panel li:last-child { margin-bottom: 0; }
+
+  .project-link {
+    display: inline-block;
+    margin-top: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .project-link:hover,
+  .project-link:focus-visible { text-decoration: underline; }
+
+  /* language block */
+  .lang-score {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 6px 12px;
+    margin-bottom: 16px;
+  }
+
+  .lang-score .label { color: var(--text-dim); font-weight: 500; }
+
+  /* certifications (bottom, secondary) */
+  .cert-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .cert-row:first-of-type { border-top: none; padding-top: 0; }
+
+  .cert-name { font-size: 15px; font-weight: 600; }
+  .cert-note { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+
+  .cert-status {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--arrived);
+  }
+
+  .cert-status .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--arrived);
+  }
+
+  /* contact */
+  .contact-panel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+
+  .contact-panel button,
+  .contact-panel a {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--text-dim);
+    text-decoration: none;
+    cursor: pointer;
+    font: inherit;
+    letter-spacing: inherit;
+    position: relative;
+    transition: color 80ms ease-out;
+  }
+
+  .contact-panel button:hover,
+  .contact-panel button:focus-visible,
+  .contact-panel a:hover,
+  .contact-panel a:focus-visible {
+    color: var(--accent);
+  }
+
+  .copy-toast {
+    position: absolute;
+    left: 0;
+    top: -22px;
+    font-size: 11px;
+    color: var(--accent);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 160ms ease-out;
+    white-space: nowrap;
+  }
+
+  .copy-toast.show { opacity: 1; }
+
+  @media (max-width: 767px) {
+    .board-header { padding: 24px 20px 8px; }
+    .section-label { padding: 20px 20px 0; }
+    main { padding: 16px 20px 72px; }
+    .panel { padding: 20px; }
+    .cert-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="board-header">
+  <a class="brand" href="index.html">SUNGWOO'S PROJECT</a>
+  <a class="nav-link" href="list.html">PROJECTS</a>
+</header>
+
+<p class="section-label mono">CAPABILITIES</p>
+
+<main>
+  <h1>AI 활용 · 어학</h1>
+
+  <div class="panel">
+    <h2>AI 활용 관점</h2>
+    <p>AI는 대체가 아니라 사고 속도를 맞추는 도구라고 생각합니다. 특히 아이디어를 문서로, 문서를 동작하는 화면으로 옮기는 구간에서 효율이 크게 달라집니다.</p>
+    <p>다만 기획자가 검증해야 할 것은 결과물 자체가 아니라 그 결과물이 나온 논리라고 봅니다. AI가 만든 산출물도 직접 뜯어보고 근거를 확인한 뒤에만 씁니다.</p>
+  </div>
+
+  <div class="panel">
+    <h2>AI 활용 사례</h2>
+    <p>COSTPILOT을 기획하며 Claude Code로 As-Is 분석 → PRD 작성 → 데이터 모델 설계 → 동작하는 프로토타입까지 하나의 흐름으로 연결했습니다.</p>
+    <ul>
+      <li>사내 CMS에 그대로 붙여넣을 수 있도록 sheet1 포맷을 유지하기로 결정</li>
+      <li>프로모션·홈쇼핑 상품은 의도적으로 자동화 대상에서 제외</li>
+      <li>단일 HTML + SheetJS 스택 선택</li>
+      <li>양안정 구간은 낮은 쪽 값으로 고정하고 경고 배지로 표시</li>
+    </ul>
+    <a class="project-link" href="list.html">COSTPILOT 프로젝트 보기 →</a>
+  </div>
+
+  <div class="panel">
+    <h2>어학 · 해외 실무</h2>
+    <div class="lang-score"><span class="label">OPIc</span> AL</div>
+    <p>하나투어 동남아상품팀 재직 중 태국 등 동남아 지역으로 다수의 해외 출장을 다녀왔습니다.</p>
+    <p>관광청 주관 로드쇼 참여, 현지 바이어 미팅 등 외국어로 진행되는 컨퍼런스·상담 자리에 여러 차례 참여했습니다.</p>
+  </div>
+
+  <div class="panel">
+    <h2>자격증</h2>
+    <div class="cert-row">
+      <div>
+        <div class="cert-name">운전면허 1종 보통</div>
+        <div class="cert-note">영업·외근 직군 대비</div>
+      </div>
+      <span class="cert-status"><span class="dot"></span>보유</span>
+    </div>
+  </div>
+
+  <div class="panel contact-panel">
+    <button type="button" id="email-copy" aria-label="이메일 주소 복사">
+      doaq3210@gmail.com
+      <span class="copy-toast" id="copy-toast">복사됨</span>
+    </button>
+    <!-- TODO: 실제 GitHub / LinkedIn URL로 교체 -->
+    <a href="#" target="_blank" rel="noopener">GITHUB</a>
+    <a href="#" target="_blank" rel="noopener">LINKEDIN</a>
+  </div>
+</main>
+
+<script>
+  (function () {
+    var btn = document.getElementById('email-copy');
+    var toast = document.getElementById('copy-toast');
+    var email = 'doaq3210@gmail.com';
+    var timer = null;
+
+    btn.addEventListener('click', function () {
+      var showToast = function () {
+        toast.classList.add('show');
+        clearTimeout(timer);
+        timer = setTimeout(function () { toast.classList.remove('show'); }, 1400);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(email).then(showToast).catch(function () {
+          window.location.href = 'mailto:' + email;
+        });
+      } else {
+        window.location.href = 'mailto:' + email;
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
