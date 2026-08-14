@@ -208,6 +208,7 @@
     line-height: 1.6;
     color: var(--text-dim);
     flex: 1;
+    white-space: pre-line;
   }
 
   .card-hint {
@@ -571,6 +572,14 @@
         result: '지금 보고 있는 이 사이트 자체가 산출물입니다.',
         stack: ['HTML', 'CSS', 'JAVASCRIPT', 'CLAUDE CODE']
       }
+    },
+    {
+      no: '04',
+      name: 'ICANEAT',
+      summary: '뭐 먹을지 고민될 때 취향과 상황에 맞춰 메뉴를 추천해주는 서비스입니다.\n카드를 클릭하면 배포된 사이트로 바로 이동합니다.',
+      status: 'arrived',
+      link: 'https://icaneat-rust.vercel.app/',
+      detail: null
     }
   ];
 
@@ -612,7 +621,9 @@
     card.tabIndex = 0;
 
     var statusHTML = '<span class="status status-' + project.status + '"><span class="dot"></span>' + STATUS_LABEL[project.status] + '</span>';
-    var hintText = project.status === 'scheduled' ? 'SCHEDULED — 준비 중' : '자세히 보기 →';
+    var hintText = project.status === 'scheduled'
+      ? 'SCHEDULED — 준비 중'
+      : (project.link ? '사이트 바로가기 ↗' : '자세히 보기 →');
 
     var faceHTML =
       '<div class="card-face">' +
@@ -627,7 +638,13 @@
 
     card.innerHTML = faceHTML;
 
-    if (project.status !== 'scheduled') {
+    if (project.link) {
+      card.setAttribute('role', 'link');
+      card.setAttribute('aria-label', project.name + ' 사이트로 이동 (새 탭)');
+      card.addEventListener('click', function () {
+        window.open(project.link, '_blank', 'noopener');
+      });
+    } else if (project.status !== 'scheduled') {
       card.setAttribute('role', 'button');
       card.setAttribute('aria-haspopup', 'dialog');
       card.setAttribute('aria-expanded', 'false');
