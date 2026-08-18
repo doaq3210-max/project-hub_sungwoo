@@ -527,7 +527,7 @@
   gsap.registerPlugin(Flip);
 
   var STATUS_LABEL = { arrived: 'ARRIVED', boarding: 'BOARDING', scheduled: 'SCHEDULED' };
-  var CARD_COLORS = ['#2FB3C9', '#8A93A0', '#C77DFF', '#E8A33D'];
+  var CARD_COLORS = ['#2FB3C9', '#8A93A0', '#C77DFF', '#E8A33D', '#4FBF7B', '#F2789F'];
   var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var projects = [
@@ -579,6 +579,22 @@
       summary: '뭐 먹을지 고민될 때 취향과 상황에 맞춰 메뉴를 추천해주는 서비스입니다.\n카드를 클릭하면 배포된 사이트로 바로 이동합니다.',
       status: 'arrived',
       link: 'https://icaneat-rust.vercel.app/',
+      detail: null
+    },
+    {
+      no: '05',
+      name: 'LAND LIVE WEATHER',
+      summary: '세계 랜드마크의 실시간 날씨를 대륙별로 보여주는 서비스입니다.\n카드를 클릭하면 배포된 사이트로 바로 이동합니다.',
+      status: 'arrived',
+      link: 'https://land-live-weather-mew4lagji-sungwoo2.vercel.app/',
+      detail: null
+    },
+    {
+      no: '06',
+      name: 'NEWS IN TREND',
+      summary: '요즘 많이 찾는 주제로 실시간 뉴스를 검색·정렬해 보여주는 서비스입니다.\n카드를 클릭하면 배포된 사이트로 바로 이동합니다.',
+      status: 'arrived',
+      link: 'https://newsintrend-uxaw.vercel.app/?q=%ED%99%98%EC%9C%A8&sort=sim',
       detail: null
     }
   ];
