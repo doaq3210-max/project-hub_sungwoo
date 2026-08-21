@@ -550,7 +550,7 @@
       no: '01',
       name: 'COSTPILOT',
       summary: '담당자마다 제각각인 여행상품 원가표를 표준화·자동화하는 웹 도구',
-      status: 'boarding',
+      status: 'arrived',
       detail: {
         demoLink: 'https://costpilot-three.vercel.app/',
         problem: '원가표 양식이 담당자마다 달라 일원화되지 않았습니다. 수기 계산, 동일 로직의 4중 복제, 매직넘버 등 구조적 문제가 다수 있었습니다.',
@@ -592,42 +592,47 @@
     {
       no: '04',
       name: 'ICANEAT',
-      summary: '뭐 먹을지 고민될 때 취향과 상황에 맞춰 메뉴를 추천해주는 서비스입니다.\n카드를 클릭하면 배포된 사이트로 바로 이동합니다.',
+      summary: '뭐 먹을지 고민될 때 취향과 상황에 맞춰 메뉴를 추천해주는 서비스입니다.\n카드를 클릭하면 상세 정보를 볼 수 있습니다.',
       status: 'arrived',
-      link: 'https://icaneat-rust.vercel.app/',
-      detail: null
+      detail: {
+        demoLink: 'https://icaneat-rust.vercel.app/'
+      }
     },
     {
       no: '05',
       name: 'LAND LIVE WEATHER',
-      summary: '세계 랜드마크의 실시간 날씨를 대륙별로 보여주는 서비스입니다.\n카드를 클릭하면 배포된 사이트로 바로 이동합니다.',
+      summary: '세계 랜드마크의 실시간 날씨를 대륙별로 보여주는 서비스입니다.\n카드를 클릭하면 상세 정보를 볼 수 있습니다.',
       status: 'arrived',
-      link: 'https://land-live-weather-mew4lagji-sungwoo2.vercel.app/',
-      detail: null
+      detail: {
+        demoLink: 'https://land-live-weather-mew4lagji-sungwoo2.vercel.app/'
+      }
     },
     {
       no: '06',
       name: 'NEWS IN TREND',
-      summary: '요즘 많이 찾는 주제로 실시간 뉴스를 검색·정렬해 보여주는 서비스입니다.\n카드를 클릭하면 배포된 사이트로 바로 이동합니다.',
+      summary: '요즘 많이 찾는 주제로 실시간 뉴스를 검색·정렬해 보여주는 서비스입니다.\n카드를 클릭하면 상세 정보를 볼 수 있습니다.',
       status: 'arrived',
-      link: 'https://newsintrend-uxaw.vercel.app/?q=%ED%99%98%EC%9C%A8&sort=sim',
-      detail: null
+      detail: {
+        demoLink: 'https://newsintrend-uxaw.vercel.app/?q=%ED%99%98%EC%9C%A8&sort=sim'
+      }
     },
     {
       no: '07',
       name: 'LIVE AIR QUALITY',
-      summary: '대한민국 17개 시도의 통합대기환경지수와 대기오염물질 현황을 등급 색으로 보여주는 서비스입니다.\n카드를 클릭하면 배포된 사이트로 바로 이동합니다.',
+      summary: '대한민국 17개 시도의 통합대기환경지수와 대기오염물질 현황을 등급 색으로 보여주는 서비스입니다.\n카드를 클릭하면 상세 정보를 볼 수 있습니다.',
       status: 'arrived',
-      link: 'https://liveairquality-foo3.vercel.app/',
-      detail: null
+      detail: {
+        demoLink: 'https://liveairquality-foo3.vercel.app/'
+      }
     },
     {
       no: '08',
       name: 'MEMO',
-      summary: 'Supabase를 백엔드로 사용하는 노션 스타일 메모장입니다. 작성, 수정, 삭제와 최신순 정렬을 지원합니다.\n카드를 클릭하면 배포된 사이트로 바로 이동합니다.',
+      summary: 'Supabase를 백엔드로 사용하는 노션 스타일 메모장입니다. 작성, 수정, 삭제와 최신순 정렬을 지원합니다.\n카드를 클릭하면 상세 정보를 볼 수 있습니다.',
       status: 'arrived',
-      link: 'https://memo-xi-lovat.vercel.app/',
-      detail: null
+      detail: {
+        demoLink: 'https://memo-xi-lovat.vercel.app/'
+      }
     }
   ];
 
@@ -672,7 +677,7 @@
     var statusHTML = '<span class="status status-' + project.status + '"><span class="dot"></span>' + STATUS_LABEL[project.status] + '</span>';
     var hintText = project.status === 'scheduled'
       ? 'SCHEDULED — 준비 중'
-      : (project.link ? '사이트 바로가기 ↗' : '자세히 보기 →');
+      : '자세히 보기 →';
 
     var faceHTML =
       '<div class="card-face">' +
@@ -687,13 +692,7 @@
 
     card.innerHTML = faceHTML;
 
-    if (project.link) {
-      card.setAttribute('role', 'link');
-      card.setAttribute('aria-label', project.name + ' 사이트로 이동 (새 탭)');
-      card.addEventListener('click', function () {
-        window.open(project.link, '_blank', 'noopener');
-      });
-    } else if (project.status !== 'scheduled') {
+    if (project.status !== 'scheduled') {
       card.setAttribute('role', 'button');
       card.setAttribute('aria-haspopup', 'dialog');
       card.setAttribute('aria-expanded', 'false');
