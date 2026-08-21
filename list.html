@@ -417,6 +417,21 @@
   .detail-section li { margin-bottom: 6px; }
   .detail-section li:last-child { margin-bottom: 0; }
 
+  .detail-live-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--card-accent, var(--accent));
+    text-decoration: none;
+  }
+
+  .detail-live-link:hover,
+  .detail-live-link:focus-visible { text-decoration: underline; }
+
   .detail-stack {
     display: flex;
     flex-wrap: wrap;
@@ -537,6 +552,7 @@
       summary: '담당자마다 제각각인 여행상품 원가표를 표준화·자동화하는 웹 도구',
       status: 'boarding',
       detail: {
+        demoLink: 'https://costpilot-three.vercel.app/',
         problem: '원가표 양식이 담당자마다 달라 일원화되지 않았습니다. 수기 계산, 동일 로직의 4중 복제, 매직넘버 등 구조적 문제가 다수 있었습니다.',
         role: '기획 전 과정을 단독으로 수행했습니다 — As-Is 분석, PRD 작성, 데이터 모델 설계, 프로토타입 구현까지 직접 진행했습니다.',
         process: [
@@ -632,6 +648,7 @@
   function buildDetailHTML(project) {
     var d = project.detail;
     var html = '';
+    html += section('라이브 데모', d.demoLink ? '<p><a class="detail-live-link" href="' + d.demoLink + '" target="_blank" rel="noopener">사이트 바로가기 ↗</a></p>' : '');
     html += section('문제 정의', d.problem ? '<p>' + d.problem + '</p>' : '');
     html += section('내 역할 · 기여도', d.role ? '<p>' + d.role + '</p>' : '');
     if (d.process && d.process.length) {
