@@ -594,7 +594,9 @@
       name: 'ICANEAT',
       summary: '뭐 먹을지 고민될 때 취향과 상황에 맞춰 메뉴를 추천해주는 서비스입니다.\n카드를 클릭하면 상세 정보를 볼 수 있습니다.',
       status: 'arrived',
+      isDemo: true,
       detail: {
+        description: '뭐 먹을지 고민될 때 취향과 상황에 맞춰 메뉴를 추천해주는 서비스입니다.',
         demoLink: 'https://icaneat-rust.vercel.app/'
       }
     },
@@ -603,7 +605,9 @@
       name: 'LAND LIVE WEATHER',
       summary: '세계 랜드마크의 실시간 날씨를 대륙별로 보여주는 서비스입니다.\n카드를 클릭하면 상세 정보를 볼 수 있습니다.',
       status: 'arrived',
+      isDemo: true,
       detail: {
+        description: '세계 랜드마크의 실시간 날씨를 대륙별로 보여주는 서비스입니다.',
         demoLink: 'https://land-live-weather-mew4lagji-sungwoo2.vercel.app/'
       }
     },
@@ -612,7 +616,9 @@
       name: 'NEWS IN TREND',
       summary: '요즘 많이 찾는 주제로 실시간 뉴스를 검색·정렬해 보여주는 서비스입니다.\n카드를 클릭하면 상세 정보를 볼 수 있습니다.',
       status: 'arrived',
+      isDemo: true,
       detail: {
+        description: '요즘 많이 찾는 주제로 실시간 뉴스를 검색·정렬해 보여주는 서비스입니다.',
         demoLink: 'https://newsintrend-uxaw.vercel.app/?q=%ED%99%98%EC%9C%A8&sort=sim'
       }
     },
@@ -621,7 +627,9 @@
       name: 'LIVE AIR QUALITY',
       summary: '대한민국 17개 시도의 통합대기환경지수와 대기오염물질 현황을 등급 색으로 보여주는 서비스입니다.\n카드를 클릭하면 상세 정보를 볼 수 있습니다.',
       status: 'arrived',
+      isDemo: true,
       detail: {
+        description: '대한민국 17개 시도의 통합대기환경지수와 대기오염물질 현황을 등급 색으로 보여주는 서비스입니다.',
         demoLink: 'https://liveairquality-foo3.vercel.app/'
       }
     },
@@ -630,7 +638,9 @@
       name: 'MEMO',
       summary: 'Supabase를 백엔드로 사용하는 노션 스타일 메모장입니다. 작성, 수정, 삭제와 최신순 정렬을 지원합니다.\n카드를 클릭하면 상세 정보를 볼 수 있습니다.',
       status: 'arrived',
+      isDemo: true,
       detail: {
+        description: 'Supabase를 백엔드로 사용하는 노션 스타일 메모장입니다. 작성, 수정, 삭제와 최신순 정렬을 지원합니다.',
         demoLink: 'https://memo-xi-lovat.vercel.app/'
       }
     }
@@ -653,6 +663,7 @@
   function buildDetailHTML(project) {
     var d = project.detail;
     var html = '';
+    html += section('소개', d.description ? '<p>' + d.description + '</p>' : '');
     html += section('라이브 데모', d.demoLink ? '<p><a class="detail-live-link" href="' + d.demoLink + '" target="_blank" rel="noopener">사이트 바로가기 ↗</a></p>' : '');
     html += section('문제 정의', d.problem ? '<p>' + d.problem + '</p>' : '');
     html += section('내 역할 · 기여도', d.role ? '<p>' + d.role + '</p>' : '');
@@ -677,7 +688,7 @@
     var statusHTML = '<span class="status status-' + project.status + '"><span class="dot"></span>' + STATUS_LABEL[project.status] + '</span>';
     var hintText = project.status === 'scheduled'
       ? 'SCHEDULED — 준비 중'
-      : '자세히 보기 →';
+      : (project.isDemo ? '사이트 바로가기 →' : '자세히 보기 →');
 
     var faceHTML =
       '<div class="card-face">' +
