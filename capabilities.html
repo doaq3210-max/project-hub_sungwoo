@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sungwoo's Project — Capabilities</title>
+<title>Sungwoo's Project Hub — Capabilities</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -75,6 +75,14 @@
 
   .nav-link:hover,
   .nav-link:focus-visible { color: var(--accent); }
+
+  .nav-link.current { color: var(--accent); }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
 
   .section-label {
     max-width: 1120px;
@@ -260,8 +268,13 @@
 <body>
 
 <header class="board-header">
-  <a class="brand" href="index.html">SUNGWOO'S PROJECT</a>
-  <a class="nav-link" href="list.html">PROJECTS</a>
+  <a class="brand" href="index.html">SUNGWOO'S PROJECT HUB</a>
+  <div class="nav-right">
+    <a class="nav-link" href="list.html">HUB</a>
+    <a class="nav-link current" href="capabilities.html">CAPABILITIES</a>
+    <a class="nav-link" href="portfolio.html">PORTFOLIO</a>
+    <a class="nav-link" href="projects.html">PROJECTS</a>
+  </div>
 </header>
 
 <p class="section-label mono">CAPABILITIES</p>
@@ -284,7 +297,7 @@
       <li>단일 HTML + SheetJS 스택 선택</li>
       <li>양안정 구간은 낮은 쪽 값으로 고정하고 경고 배지로 표시</li>
     </ul>
-    <a class="project-link" href="list.html">COSTPILOT 프로젝트 보기 →</a>
+    <a class="project-link" href="portfolio.html#costpilot">COSTPILOT 프로젝트 보기 →</a>
   </div>
 
   <div class="panel">
