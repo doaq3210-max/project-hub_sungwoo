@@ -3,7 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sungwoo's Project Hub</title>
+<title>메뉴 | Sungwoo's Project Hub</title>
+<meta name="description" content="Capabilities, Portfolio, Projects 세 영역으로 구성된 김성우의 프로젝트 허브 메뉴입니다. 원하는 항목을 선택해 자세히 살펴보세요.">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+    } catch (e) {}
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -16,6 +25,21 @@
     --text: #F2F4F6;
     --text-dim: #8A93A0;
     --accent: #2FB3C9;
+    --chip-cyan: #2FB3C9;
+    --chip-orange: #E8A33D;
+    --chip-green: #4FBF7B;
+  }
+
+  :root[data-theme="light"] {
+    --bg: #F5F6F8;
+    --panel: #FFFFFF;
+    --rule: #DADFE5;
+    --text: #14161A;
+    --text-dim: #5B6472;
+    --accent: #0E7490;
+    --chip-cyan: #0E7490;
+    --chip-orange: #9C5B0A;
+    --chip-green: #146C3B;
   }
 
   * { box-sizing: border-box; }
@@ -26,6 +50,7 @@
     min-height: 100%;
     background: var(--bg);
     color: var(--text);
+    transition: background-color 150ms ease-out, color 150ms ease-out;
   }
 
   body {
@@ -77,7 +102,36 @@
     height: 6px;
     border-radius: 50%;
     background: var(--accent);
-    box-shadow: 0 0 0 2px rgba(47, 179, 201, 0.15);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 15%, transparent);
+  }
+
+  .mode-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 5px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: border-color 80ms ease-out, color 80ms ease-out;
+  }
+
+  .mode-toggle:hover,
+  .mode-toggle:focus-visible {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
   }
 
   .section-label {
@@ -175,6 +229,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .hub-tile { transition: none; }
+    html, body { transition: none !important; }
   }
 </style>
 </head>
@@ -182,10 +237,15 @@
 
 <header class="board-header">
   <a class="brand" href="index.html">SUNGWOO'S PROJECT HUB</a>
-  <span class="clock" aria-hidden="true">
-    <span class="dot"></span>
-    <span id="clock-text">SEL --:--</span>
-  </span>
+  <div class="header-right">
+    <span class="clock" aria-hidden="true">
+      <span class="dot"></span>
+      <span id="clock-text">SEL --:--</span>
+    </span>
+    <button type="button" class="mode-toggle" id="mode-toggle" aria-label="라이트 모드로 전환">
+      <span id="mode-toggle-text">LIGHT</span>
+    </button>
+  </div>
 </header>
 
 <p class="section-label mono">HUB</p>
@@ -194,21 +254,21 @@
   <h1>둘러볼 항목을 선택하세요</h1>
 
   <div class="hub-grid">
-    <a class="hub-tile" href="capabilities.html" style="--tile-accent:#2FB3C9;">
+    <a class="hub-tile" href="capabilities.html" style="--tile-accent:var(--chip-cyan);">
       <span class="tile-no mono">01</span>
       <h2 class="tile-title">CAPABILITIES</h2>
       <p class="tile-summary">AI 활용 방식, 어학·해외 실무 경험, 자격증 등 스킬 레퍼런스입니다.</p>
       <span class="tile-hint">자세히 보기 →</span>
     </a>
 
-    <a class="hub-tile" href="portfolio.html" style="--tile-accent:#E8A33D;">
+    <a class="hub-tile" href="portfolio.html" style="--tile-accent:var(--chip-orange);">
       <span class="tile-no mono">02</span>
       <h2 class="tile-title">PORTFOLIO</h2>
       <p class="tile-summary">여행업 4년의 실무 경험을 케이스 스터디로 재구성했습니다. COSTPILOT 프로젝트도 여기 있습니다.</p>
       <span class="tile-hint">자세히 보기 →</span>
     </a>
 
-    <a class="hub-tile" href="projects.html" style="--tile-accent:#4FBF7B;">
+    <a class="hub-tile" href="projects.html" style="--tile-accent:var(--chip-green);">
       <span class="tile-no mono">03</span>
       <h2 class="tile-title">PROJECTS</h2>
       <p class="tile-summary">AI로 직접 기획하고 만든 데모 서비스 5종입니다. 카드를 클릭하면 바로 사용해볼 수 있습니다.</p>
@@ -230,6 +290,27 @@
     function tick() { el.textContent = 'SEL ' + formatter.format(new Date()); }
     tick();
     setInterval(tick, 10000);
+  })();
+
+  // theme toggle
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('mode-toggle');
+    var label = document.getElementById('mode-toggle-text');
+
+    function applyLabel(theme) {
+      label.textContent = theme === 'light' ? 'DARK' : 'LIGHT';
+      btn.setAttribute('aria-label', theme === 'light' ? '다크 모드로 전환' : '라이트 모드로 전환');
+    }
+
+    applyLabel(root.getAttribute('data-theme') || 'dark');
+
+    btn.addEventListener('click', function () {
+      var next = (root.getAttribute('data-theme') || 'dark') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      applyLabel(next);
+    });
   })();
 </script>
 

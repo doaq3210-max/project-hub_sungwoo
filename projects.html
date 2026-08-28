@@ -3,7 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sungwoo's Project Hub — Projects</title>
+<title>AI 데모 프로젝트 8종 | Sungwoo's Project Hub</title>
+<meta name="description" content="Claude Code와 Gemini 등 AI로 직접 기획하고 만든 ICANEAT, MOODY WALK 등 데모 서비스 8종을 소개합니다. 카드를 클릭하면 바로 체험할 수 있습니다.">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+    } catch (e) {}
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -19,6 +28,30 @@
     --arrived: #4FBF7B;
     --boarding: #E8A33D;
     --scheduled: #8A93A0;
+    --chip-cyan: #2FB3C9;
+    --chip-gray: #8A93A0;
+    --chip-purple: #C77DFF;
+    --chip-orange: #E8A33D;
+    --chip-green: #4FBF7B;
+    --chip-pink: #F2789F;
+  }
+
+  :root[data-theme="light"] {
+    --bg: #F5F6F8;
+    --panel: #FFFFFF;
+    --rule: #DADFE5;
+    --text: #14161A;
+    --text-dim: #5B6472;
+    --accent: #0E7490;
+    --arrived: #146C3B;
+    --boarding: #9C5B0A;
+    --scheduled: #5B6472;
+    --chip-cyan: #0E7490;
+    --chip-gray: #5B6472;
+    --chip-purple: #6D28D9;
+    --chip-orange: #9C5B0A;
+    --chip-green: #146C3B;
+    --chip-pink: #BE185D;
   }
 
   * { box-sizing: border-box; }
@@ -29,6 +62,7 @@
     min-height: 100%;
     background: var(--bg);
     color: var(--text);
+    transition: background-color 150ms ease-out, color 150ms ease-out;
   }
 
   body {
@@ -70,7 +104,8 @@
   .nav-right {
     display: flex;
     align-items: center;
-    gap: 24px;
+    flex-wrap: wrap;
+    gap: 12px 24px;
   }
 
   .nav-link {
@@ -103,7 +138,30 @@
     height: 6px;
     border-radius: 50%;
     background: var(--accent);
-    box-shadow: 0 0 0 2px rgba(47, 179, 201, 0.15);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 15%, transparent);
+  }
+
+  .mode-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 5px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: border-color 80ms ease-out, color 80ms ease-out;
+  }
+
+  .mode-toggle:hover,
+  .mode-toggle:focus-visible {
+    border-color: var(--accent);
+    color: var(--accent);
   }
 
   .section-label {
@@ -114,6 +172,16 @@
     font-size: 11px;
     letter-spacing: 0.14em;
     color: var(--text-dim);
+  }
+
+  .page-title {
+    max-width: 1120px;
+    margin: 8px auto 0;
+    padding: 0 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: 28px;
+    letter-spacing: 0.02em;
   }
 
   /* carousel */
@@ -472,6 +540,7 @@
     .section-label { padding: 20px 20px 0; }
     .carousel-viewport { padding: 12px 20px 24px; }
     .carousel-controls { padding: 0 20px 4px; }
+    .page-title { padding: 0 20px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -479,6 +548,7 @@
     .scrim { transition: none; }
     .carousel-card:not(.is-open) { transition: none; }
     .detail-body { transition: none; }
+    html, body { transition: none !important; }
   }
 </style>
 </head>
@@ -486,19 +556,23 @@
 
 <header class="board-header">
   <a class="brand" href="index.html">SUNGWOO'S PROJECT HUB</a>
-  <div class="nav-right">
+  <nav class="nav-right" aria-label="주요 메뉴">
     <a class="nav-link" href="list.html">HUB</a>
     <a class="nav-link" href="capabilities.html">CAPABILITIES</a>
     <a class="nav-link" href="portfolio.html">PORTFOLIO</a>
-    <a class="nav-link current" href="projects.html">PROJECTS</a>
+    <a class="nav-link current" href="projects.html" aria-current="page">PROJECTS</a>
     <span class="clock" aria-hidden="true">
       <span class="dot"></span>
       <span id="clock-text">SEL --:--</span>
     </span>
-  </div>
+    <button type="button" class="mode-toggle" id="mode-toggle" aria-label="라이트 모드로 전환">
+      <span id="mode-toggle-text">LIGHT</span>
+    </button>
+  </nav>
 </header>
 
 <p class="section-label mono">PROJECTS — SWIPE OR CLICK ▸</p>
+<h1 class="page-title">AI로 만든 데모 프로젝트 8종</h1>
 
 <main class="carousel-section">
   <div class="carousel-viewport" id="carousel-viewport">
@@ -519,7 +593,7 @@
   gsap.registerPlugin(Flip);
 
   var STATUS_LABEL = { arrived: 'ARRIVED', boarding: 'BOARDING', scheduled: 'SCHEDULED' };
-  var CARD_COLORS = ['#2FB3C9', '#8A93A0', '#C77DFF', '#E8A33D', '#4FBF7B', '#F2789F'];
+  var CARD_COLORS = ['var(--chip-cyan)', 'var(--chip-gray)', 'var(--chip-purple)', 'var(--chip-orange)', 'var(--chip-green)', 'var(--chip-pink)'];
   var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var projects = [
@@ -548,11 +622,11 @@
     {
       no: '03',
       name: 'NEWS IN TREND',
-      summary: '요즘 많이 찾는 주제로 실시간 뉴스를 검색·정렬해 보여주는 서비스입니다.\n카드를 클릭하면 상세 정보를 볼 수 있습니다.',
+      summary: '실시간 인기 검색어 기준으로 뉴스를 검색·정렬해 보여주는 서비스입니다.\n카드를 클릭하면 상세 정보를 볼 수 있습니다.',
       status: 'arrived',
       isDemo: true,
       detail: {
-        description: '요즘 많이 찾는 주제로 실시간 뉴스를 검색·정렬해 보여주는 서비스입니다.',
+        description: '실시간 인기 검색어 기준으로 뉴스를 검색·정렬해 보여주는 서비스입니다.',
         demoLink: 'https://newsintrend-uxaw.vercel.app/?q=%ED%99%98%EC%9C%A8&sort=sim'
       }
     },
@@ -660,7 +734,7 @@
           '<span class="card-no mono">' + project.no + '</span>' +
           statusHTML +
         '</div>' +
-        '<h3 class="card-title">' + project.name + '</h3>' +
+        '<h2 class="card-title">' + project.name + '</h2>' +
         '<p class="card-summary">' + project.summary + '</p>' +
         '<span class="card-hint">' + hintText + '</span>' +
       '</div>';
@@ -839,6 +913,27 @@
     function tick() { el.textContent = 'SEL ' + formatter.format(new Date()); }
     tick();
     setInterval(tick, 10000);
+  })();
+
+  // theme toggle
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('mode-toggle');
+    var label = document.getElementById('mode-toggle-text');
+
+    function applyLabel(theme) {
+      label.textContent = theme === 'light' ? 'DARK' : 'LIGHT';
+      btn.setAttribute('aria-label', theme === 'light' ? '다크 모드로 전환' : '라이트 모드로 전환');
+    }
+
+    applyLabel(root.getAttribute('data-theme') || 'dark');
+
+    btn.addEventListener('click', function () {
+      var next = (root.getAttribute('data-theme') || 'dark') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      applyLabel(next);
+    });
   })();
 </script>
 

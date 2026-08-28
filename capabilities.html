@@ -3,7 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sungwoo's Project Hub — Capabilities</title>
+<title>AI 활용·어학 역량 | Sungwoo's Project Hub</title>
+<meta name="description" content="Claude Code를 활용한 기획 프로세스, OPIc AL 어학 성적, 동남아 해외 실무 경험 등 기획자 김성우의 AI 활용 방식과 역량을 소개합니다.">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+    } catch (e) {}
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -19,6 +28,16 @@
     --arrived: #4FBF7B;
   }
 
+  :root[data-theme="light"] {
+    --bg: #F5F6F8;
+    --panel: #FFFFFF;
+    --rule: #DADFE5;
+    --text: #14161A;
+    --text-dim: #5B6472;
+    --accent: #0E7490;
+    --arrived: #146C3B;
+  }
+
   * { box-sizing: border-box; }
 
   html, body {
@@ -27,6 +46,7 @@
     min-height: 100%;
     background: var(--bg);
     color: var(--text);
+    transition: background-color 150ms ease-out, color 150ms ease-out;
   }
 
   body {
@@ -81,7 +101,31 @@
   .nav-right {
     display: flex;
     align-items: center;
-    gap: 24px;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+  }
+
+  .mode-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 5px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: border-color 80ms ease-out, color 80ms ease-out;
+  }
+
+  .mode-toggle:hover,
+  .mode-toggle:focus-visible {
+    border-color: var(--accent);
+    color: var(--accent);
   }
 
   .section-label {
@@ -263,18 +307,25 @@
     .panel { padding: 20px; }
     .cert-row { flex-direction: column; align-items: flex-start; gap: 6px; }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    html, body { transition: none !important; }
+  }
 </style>
 </head>
 <body>
 
 <header class="board-header">
   <a class="brand" href="index.html">SUNGWOO'S PROJECT HUB</a>
-  <div class="nav-right">
+  <nav class="nav-right" aria-label="주요 메뉴">
     <a class="nav-link" href="list.html">HUB</a>
-    <a class="nav-link current" href="capabilities.html">CAPABILITIES</a>
+    <a class="nav-link current" href="capabilities.html" aria-current="page">CAPABILITIES</a>
     <a class="nav-link" href="portfolio.html">PORTFOLIO</a>
     <a class="nav-link" href="projects.html">PROJECTS</a>
-  </div>
+    <button type="button" class="mode-toggle" id="mode-toggle" aria-label="라이트 모드로 전환">
+      <span id="mode-toggle-text">LIGHT</span>
+    </button>
+  </nav>
 </header>
 
 <p class="section-label mono">CAPABILITIES</p>
@@ -283,13 +334,13 @@
   <h1>AI 활용 · 어학</h1>
 
   <div class="panel">
-    <h2>AI 활용 관점</h2>
+    <h2>AI를 어떤 관점으로 활용하고 있을까?</h2>
     <p>AI는 대체가 아니라 사고 속도를 맞추는 도구라고 생각합니다. 특히 아이디어를 문서로, 문서를 동작하는 화면으로 옮기는 구간에서 효율이 크게 달라집니다.</p>
     <p>다만 기획자가 검증해야 할 것은 결과물 자체가 아니라 그 결과물이 나온 논리라고 봅니다. AI가 만든 산출물도 직접 뜯어보고 근거를 확인한 뒤에만 씁니다.</p>
   </div>
 
   <div class="panel">
-    <h2>AI 활용 사례</h2>
+    <h2>AI를 실제로 어떻게 활용했을까?</h2>
     <p>COSTPILOT을 기획하며 Claude Code로 As-Is 분석 → PRD 작성 → 데이터 모델 설계 → 동작하는 프로토타입까지 하나의 흐름으로 연결했습니다.</p>
     <ul>
       <li>사내 CMS에 그대로 붙여넣을 수 있도록 sheet1 포맷을 유지하기로 결정</li>
@@ -301,14 +352,14 @@
   </div>
 
   <div class="panel">
-    <h2>어학 · 해외 실무</h2>
+    <h2>어학·해외 실무 경험은 어느 정도일까?</h2>
     <div class="lang-score"><span class="label">OPIc</span> AL</div>
     <p>하나투어 동남아상품팀 재직 중 태국 등 동남아 지역으로 다수의 해외 출장을 다녀왔습니다.</p>
     <p>관광청 주관 로드쇼 참여, 현지 바이어 미팅 등 외국어로 진행되는 컨퍼런스·상담 자리에 여러 차례 참여했습니다.</p>
   </div>
 
   <div class="panel">
-    <h2>자격증</h2>
+    <h2>보유한 자격증은 무엇일까?</h2>
     <div class="cert-row">
       <div>
         <div class="cert-name">운전면허 1종 보통</div>
@@ -318,7 +369,7 @@
     </div>
   </div>
 
-  <div class="panel contact-panel">
+  <footer class="panel contact-panel">
     <button type="button" id="email-copy" aria-label="이메일 주소 복사">
       doaq3210@gmail.com
       <span class="copy-toast" id="copy-toast">복사됨</span>
@@ -326,7 +377,7 @@
     <!-- TODO: 실제 GitHub / LinkedIn URL로 교체 -->
     <a href="#" target="_blank" rel="noopener">GITHUB</a>
     <a href="#" target="_blank" rel="noopener">LINKEDIN</a>
-  </div>
+  </footer>
 </main>
 
 <script>
@@ -350,6 +401,27 @@
       } else {
         window.location.href = 'mailto:' + email;
       }
+    });
+  })();
+
+  // theme toggle
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('mode-toggle');
+    var label = document.getElementById('mode-toggle-text');
+
+    function applyLabel(theme) {
+      label.textContent = theme === 'light' ? 'DARK' : 'LIGHT';
+      btn.setAttribute('aria-label', theme === 'light' ? '다크 모드로 전환' : '라이트 모드로 전환');
+    }
+
+    applyLabel(root.getAttribute('data-theme') || 'dark');
+
+    btn.addEventListener('click', function () {
+      var next = (root.getAttribute('data-theme') || 'dark') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      applyLabel(next);
     });
   })();
 </script>

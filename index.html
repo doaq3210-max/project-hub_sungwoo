@@ -3,7 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sungwoo's Project Hub</title>
+<title>Sungwoo's Project Hub | 여행업 기획자 김성우 포트폴리오</title>
+<meta name="description" content="하나투어 동남아상품팀에서 4년간 원가관리·상품기획을 담당한 기획자 김성우의 포트폴리오입니다. AI 활용 사례와 실무 프로젝트를 소개합니다.">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+    } catch (e) {}
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -18,6 +27,15 @@
     --accent: #2FB3C9;
   }
 
+  :root[data-theme="light"] {
+    --bg: #F5F6F8;
+    --panel: #FFFFFF;
+    --rule: #DADFE5;
+    --text: #14161A;
+    --text-dim: #5B6472;
+    --accent: #0E7490;
+  }
+
   * { box-sizing: border-box; }
 
   html, body {
@@ -27,6 +45,7 @@
     background: var(--bg);
     color: var(--text);
     overflow: hidden;
+    transition: background-color 150ms ease-out, color 150ms ease-out;
   }
 
   body {
@@ -41,6 +60,7 @@
 
   .stage {
     position: relative;
+    isolation: isolate;
     width: 100%;
     height: 100vh;
     height: 100dvh;
@@ -56,11 +76,45 @@
     margin: 0 auto;
   }
 
-  /* clock */
-  .clock {
+  /* background illustration — departure hall line art */
+  .bg-illustration {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .bg-illustration .bgi-structure {
+    fill: none;
+    stroke: var(--text-dim);
+    stroke-width: 1.5;
+    opacity: 0.22;
+  }
+
+  .bg-illustration .bgi-accent {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2;
+    opacity: 0.45;
+  }
+
+  @media (max-width: 900px) {
+    .bg-illustration { opacity: 0.6; }
+  }
+
+  /* top-right controls */
+  .top-right {
     position: absolute;
     top: 32px;
     right: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .clock {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
     letter-spacing: 0.1em;
@@ -75,7 +129,30 @@
     height: 6px;
     border-radius: 50%;
     background: var(--accent);
-    box-shadow: 0 0 0 2px rgba(47, 179, 201, 0.15);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 15%, transparent);
+  }
+
+  .mode-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 5px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: border-color 80ms ease-out, color 80ms ease-out;
+  }
+
+  .mode-toggle:hover,
+  .mode-toggle:focus-visible {
+    border-color: var(--accent);
+    color: var(--accent);
   }
 
   /* title */
@@ -100,7 +177,13 @@
 
   .flap-title {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .flap-line {
+    display: flex;
+    flex-wrap: nowrap;
     gap: 4px;
     line-height: 1;
   }
@@ -203,7 +286,7 @@
 
   .enter-btn:hover,
   .enter-btn:focus-visible {
-    background: rgba(47, 179, 201, 0.12);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
   }
 
   .enter-btn .arrow {
@@ -278,7 +361,7 @@
 
   @media (max-width: 767px) {
     .stage { padding: 24px; align-items: flex-start; padding-top: 72px; }
-    .clock { top: 24px; right: 24px; }
+    .top-right { top: 24px; right: 24px; }
     .flap-char { font-size: clamp(22px, 8vw, 34px); }
     .rule, .tagline { max-width: 100%; }
     .skip-link { display: none; }
@@ -290,21 +373,102 @@
       opacity: 1 !important;
       transform: none !important;
     }
+
+    html, body {
+      transition: none !important;
+    }
   }
 </style>
 </head>
 <body>
 
 <div class="stage">
-  <div class="clock" id="clock" aria-hidden="true">
-    <span class="dot"></span>
-    <span id="clock-text">SEL --:--</span>
+  <svg class="bg-illustration" viewBox="0 0 1600 1050" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+    <!-- roofline -->
+    <path class="bgi-structure" d="M-20,300 C 260,230 480,325 760,270 C 1040,210 1300,305 1620,245" />
+    <!-- roof struts -->
+    <line class="bgi-structure" x1="180" y1="350" x2="205" y2="270" />
+    <line class="bgi-structure" x1="420" y1="350" x2="450" y2="280" />
+    <line class="bgi-structure" x1="660" y1="350" x2="690" y2="265" />
+    <line class="bgi-structure" x1="900" y1="350" x2="920" y2="245" />
+    <line class="bgi-structure" x1="1140" y1="350" x2="1160" y2="270" />
+    <line class="bgi-structure" x1="1380" y1="350" x2="1400" y2="255" />
+    <!-- curtain-wall beam -->
+    <line class="bgi-structure" x1="0" y1="350" x2="1600" y2="350" />
+    <!-- curtain-wall mullions -->
+    <line class="bgi-structure" x1="100" y1="350" x2="100" y2="770" />
+    <line class="bgi-structure" x1="220" y1="350" x2="220" y2="770" />
+    <line class="bgi-structure" x1="340" y1="350" x2="340" y2="770" />
+    <line class="bgi-structure" x1="460" y1="350" x2="460" y2="770" />
+    <line class="bgi-structure" x1="580" y1="350" x2="580" y2="770" />
+    <line class="bgi-structure" x1="700" y1="350" x2="700" y2="770" />
+    <line class="bgi-structure" x1="820" y1="350" x2="820" y2="770" />
+    <line class="bgi-structure" x1="940" y1="350" x2="940" y2="770" />
+    <line class="bgi-structure" x1="1060" y1="350" x2="1060" y2="770" />
+    <line class="bgi-structure" x1="1180" y1="350" x2="1180" y2="770" />
+    <line class="bgi-structure" x1="1300" y1="350" x2="1300" y2="770" />
+    <line class="bgi-structure" x1="1420" y1="350" x2="1420" y2="770" />
+    <line class="bgi-structure" x1="1540" y1="350" x2="1540" y2="770" />
+    <!-- transoms -->
+    <line class="bgi-structure" x1="0" y1="510" x2="1600" y2="510" />
+    <line class="bgi-structure" x1="0" y1="640" x2="1600" y2="640" />
+    <!-- floor horizon -->
+    <line class="bgi-structure" x1="0" y1="770" x2="1600" y2="770" />
+    <!-- floor perspective -->
+    <line class="bgi-structure" x1="-100" y1="1050" x2="900" y2="770" />
+    <line class="bgi-structure" x1="150" y1="1050" x2="900" y2="770" />
+    <line class="bgi-structure" x1="400" y1="1050" x2="900" y2="770" />
+    <line class="bgi-structure" x1="650" y1="1050" x2="900" y2="770" />
+    <line class="bgi-structure" x1="900" y1="1050" x2="900" y2="770" />
+    <line class="bgi-structure" x1="1150" y1="1050" x2="900" y2="770" />
+    <line class="bgi-structure" x1="1400" y1="1050" x2="900" y2="770" />
+    <line class="bgi-structure" x1="1650" y1="1050" x2="900" y2="770" />
+    <line class="bgi-structure" x1="1900" y1="1050" x2="900" y2="770" />
+    <!-- departure board -->
+    <rect class="bgi-structure" x="90" y="620" width="220" height="86" rx="2" />
+    <line class="bgi-structure" x1="112" y1="644" x2="270" y2="644" />
+    <line class="bgi-structure" x1="112" y1="662" x2="240" y2="662" />
+    <line class="bgi-structure" x1="112" y1="680" x2="288" y2="680" />
+    <!-- figures -->
+    <g class="bgi-structure">
+      <circle cx="640" cy="724" r="7" />
+      <path d="M628,766 L634,746 L646,746 L652,766" />
+      <rect x="652" y="752" width="10" height="14" />
+    </g>
+    <g class="bgi-structure">
+      <circle cx="1010" cy="730" r="7" />
+      <path d="M998,768 L1004,750 L1016,750 L1022,768" />
+    </g>
+    <!-- paper-plane -->
+    <path class="bgi-accent" d="M1100,410 L1340,340 L1140,510 L1165,442 Z" />
+    <path class="bgi-accent" d="M1165,442 L1340,340" />
+    <!-- sunburst -->
+    <g class="bgi-accent">
+      <circle cx="1380" cy="370" r="22" />
+      <circle cx="1380" cy="370" r="40" />
+      <line x1="1380" y1="315" x2="1380" y2="300" />
+      <line x1="1428" y1="338" x2="1440" y2="328" />
+      <line x1="1428" y1="402" x2="1440" y2="412" />
+    </g>
+  </svg>
+
+  <div class="top-right">
+    <div class="clock" id="clock" aria-hidden="true">
+      <span class="dot"></span>
+      <span id="clock-text">SEL --:--</span>
+    </div>
+    <button type="button" class="mode-toggle" id="mode-toggle" aria-label="라이트 모드로 전환">
+      <span id="mode-toggle-text">LIGHT</span>
+    </button>
   </div>
 
   <main class="frame">
     <div class="title-row">
       <span class="flap-glyph" aria-hidden="true"><span></span><span></span></span>
-      <h1 class="flap-title" id="flap-title" aria-label="SUNGWOO'S PROJECT HUB"></h1>
+      <h1 class="flap-title" id="flap-title" aria-label="SUNGWOO'S PROJECT HUB">
+        <span class="flap-line" id="flap-line-1"></span>
+        <span class="flap-line" id="flap-line-2"></span>
+      </h1>
     </div>
 
     <div class="rule"></div>
@@ -320,7 +484,7 @@
       <span class="arrow">▸</span> ENTER
     </a>
 
-    <div class="contact">
+    <footer class="contact">
       <button type="button" id="email-copy" aria-label="이메일 주소 복사">
         doaq3210@gmail.com
         <span class="copy-toast" id="copy-toast">복사됨</span>
@@ -328,7 +492,7 @@
       <!-- TODO: 실제 GitHub / LinkedIn URL로 교체 -->
       <a href="#" target="_blank" rel="noopener">GITHUB</a>
       <a href="#" target="_blank" rel="noopener">LINKEDIN</a>
-    </div>
+    </footer>
   </main>
 
   <a class="skip-link" href="list.html">SKIP INTRO →</a>
@@ -337,24 +501,49 @@
 <script>
   // split-flap title
   (function () {
-    var titleText = "SUNGWOO'S PROJECT HUB";
-    var container = document.getElementById('flap-title');
+    var lines = ["SUNGWOO'S", "PROJECT HUB"];
+    var containers = [document.getElementById('flap-line-1'), document.getElementById('flap-line-2')];
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var i = 0;
 
-    titleText.split('').forEach(function (ch, i) {
-      var span = document.createElement('span');
-      if (ch === ' ') {
-        span.className = 'flap-char space';
-      } else {
-        span.className = 'flap-char';
-        span.textContent = ch;
-        if (!reduced) {
-          span.style.animationDelay = (i * 60) + 'ms';
+    lines.forEach(function (lineText, lineIndex) {
+      lineText.split('').forEach(function (ch) {
+        var span = document.createElement('span');
+        if (ch === ' ') {
+          span.className = 'flap-char space';
         } else {
-          span.style.animation = 'none';
+          span.className = 'flap-char';
+          span.textContent = ch;
+          if (!reduced) {
+            span.style.animationDelay = (i * 60) + 'ms';
+          } else {
+            span.style.animation = 'none';
+          }
         }
-      }
-      container.appendChild(span);
+        containers[lineIndex].appendChild(span);
+        i++;
+      });
+    });
+  })();
+
+  // theme toggle
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('mode-toggle');
+    var label = document.getElementById('mode-toggle-text');
+
+    function applyLabel(theme) {
+      label.textContent = theme === 'light' ? 'DARK' : 'LIGHT';
+      btn.setAttribute('aria-label', theme === 'light' ? '다크 모드로 전환' : '라이트 모드로 전환');
+    }
+
+    applyLabel(root.getAttribute('data-theme') || 'dark');
+
+    btn.addEventListener('click', function () {
+      var next = (root.getAttribute('data-theme') || 'dark') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      applyLabel(next);
     });
   })();
 

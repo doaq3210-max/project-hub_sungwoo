@@ -3,7 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sungwoo's Project Hub — Portfolio</title>
+<title>여행업 실무 포트폴리오 | Sungwoo's Project Hub</title>
+<meta name="description" content="하나투어 동남아상품팀 4년 경력의 원가관리 자동화, 협력사 협상, 데이터 기반 판매전략과 COSTPILOT 프로젝트 사례를 담은 케이스 스터디입니다.">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+    } catch (e) {}
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,6 +26,24 @@
     --text-dim: #8A93A0;
     --accent: #2FB3C9;
     --arrived: #4FBF7B;
+    --chip-cyan: #2FB3C9;
+    --chip-purple: #C77DFF;
+    --chip-orange: #E8A33D;
+    --chip-green: #4FBF7B;
+  }
+
+  :root[data-theme="light"] {
+    --bg: #F5F6F8;
+    --panel: #FFFFFF;
+    --rule: #DADFE5;
+    --text: #14161A;
+    --text-dim: #5B6472;
+    --accent: #0E7490;
+    --arrived: #146C3B;
+    --chip-cyan: #0E7490;
+    --chip-purple: #6D28D9;
+    --chip-orange: #9C5B0A;
+    --chip-green: #146C3B;
   }
 
   * { box-sizing: border-box; }
@@ -27,6 +54,7 @@
     min-height: 100%;
     background: var(--bg);
     color: var(--text);
+    transition: background-color 150ms ease-out, color 150ms ease-out;
   }
 
   body {
@@ -66,7 +94,8 @@
   .nav-right {
     display: flex;
     align-items: center;
-    gap: 24px;
+    flex-wrap: wrap;
+    gap: 12px 24px;
   }
 
   .nav-link {
@@ -83,6 +112,29 @@
   .nav-link:focus-visible { color: var(--accent); }
 
   .nav-link.current { color: var(--accent); }
+
+  .mode-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 5px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: border-color 80ms ease-out, color 80ms ease-out;
+  }
+
+  .mode-toggle:hover,
+  .mode-toggle:focus-visible {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
 
   .section-label {
     max-width: 1120px;
@@ -236,18 +288,25 @@
     main { padding: 16px 20px 72px; }
     .panel { padding: 20px; }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    html, body { transition: none !important; }
+  }
 </style>
 </head>
 <body>
 
 <header class="board-header">
   <a class="brand" href="index.html">SUNGWOO'S PROJECT HUB</a>
-  <div class="nav-right">
+  <nav class="nav-right" aria-label="주요 메뉴">
     <a class="nav-link" href="list.html">HUB</a>
     <a class="nav-link" href="capabilities.html">CAPABILITIES</a>
-    <a class="nav-link current" href="portfolio.html">PORTFOLIO</a>
+    <a class="nav-link current" href="portfolio.html" aria-current="page">PORTFOLIO</a>
     <a class="nav-link" href="projects.html">PROJECTS</a>
-  </div>
+    <button type="button" class="mode-toggle" id="mode-toggle" aria-label="라이트 모드로 전환">
+      <span id="mode-toggle-text">LIGHT</span>
+    </button>
+  </nav>
 </header>
 
 <p class="section-label mono">PORTFOLIO</p>
@@ -256,12 +315,12 @@
   <h1>여행업 4년, 문제를 시스템으로 옮긴 기록</h1>
   <p class="lede">하나투어 동남아상품팀에서 태국 지역 상품 기획부터 원가관리, 협력사 협상, 판매전략 수립, 운영관리까지 전 과정을 담당하며 만든 성과와, 그 경험이 어떻게 COSTPILOT이라는 실제 도구로 이어졌는지를 담았습니다.</p>
 
-  <div class="panel" style="--panel-accent:#2FB3C9;">
+  <div class="panel" style="--panel-accent:var(--chip-cyan);">
     <div class="panel-kicker">PROJECT · PROCESS INNOVATION</div>
-    <h2>원가관리 프로세스 자동화</h2>
+    <h2>원가관리 프로세스는 어떻게 자동화했을까?</h2>
     <div class="panel-section">
       <h3>문제 정의</h3>
-      <p>상품별 원가를 담당자가 수기로 계산하는 방식이 표준이었습니다. 이 때문에 계산 오류가 발생했고, 원가 산정 하나에 상당한 업무 시간이 소요됐습니다.</p>
+      <p>상품별 원가를 담당자가 수기로 계산하는 방식이 표준이었습니다. 이 때문에 계산 오류가 발생했고, 원가 산정 한 건에 1~2시간 이상이 소요됐습니다.</p>
     </div>
     <div class="panel-section">
       <h3>내 역할 · 기여도</h3>
@@ -284,9 +343,9 @@
     </div>
   </div>
 
-  <div class="panel" style="--panel-accent:#C77DFF;">
+  <div class="panel" style="--panel-accent:var(--chip-purple);">
     <div class="panel-kicker">CAREER · GLOBAL PARTNERSHIP</div>
-    <h2>협력사 협상 &amp; 치앙마이 대홍수 위기 대응</h2>
+    <h2>협력사 협상과 치앙마이 대홍수 위기, 어떻게 대응했을까?</h2>
     <div class="panel-section">
       <h3>문제 정의</h3>
       <p>동일한 비용 안에서 상품 경쟁력을 어떻게 끌어올릴지가 상시 과제였습니다. 여기에 더해 2024년 치앙마이·치앙라이 지역 대홍수로 예약된 호텔이 휴업하고 일부 명소 방문이 불가능해지면서, 고객 안전 확보와 운영 정상화를 동시에 해결해야 했습니다.</p>
@@ -309,9 +368,9 @@
     </div>
   </div>
 
-  <div class="panel" style="--panel-accent:#E8A33D;">
+  <div class="panel" style="--panel-accent:var(--chip-orange);">
     <div class="panel-kicker">CAREER · BUSINESS PERFORMANCE</div>
-    <h2>데이터 기반 판매전략</h2>
+    <h2>데이터 기반 판매전략은 어떻게 세웠을까?</h2>
     <div class="panel-section">
       <h3>문제 정의</h3>
       <p>상품 기획부터 운영, 협력사 관리, 판매전략 수립까지 전 과정을 담당하며, 감이 아닌 데이터에 근거한 의사결정 구조를 만들어야 했습니다.</p>
@@ -324,8 +383,8 @@
       <h3>진행 과정 · 의사결정</h3>
       <ul>
         <li>고객 수요를 예측하고 그에 맞는 공급 전략을 수립</li>
-        <li>홈쇼핑, 자사 채널, 제휴 채널 등 다양한 판매 채널의 운영 지표를 지속적으로 모니터링하며 전략을 조정</li>
-        <li>다양한 이해관계자와 협업하며 의사결정을 실행으로 연결</li>
+        <li>홈쇼핑, 자사 채널, 제휴 채널의 운영 지표를 지속적으로 모니터링하며 전략을 조정</li>
+        <li>협력사·판매채널 담당자 등 이해관계자와 협업하며 의사결정을 실행으로 연결</li>
       </ul>
     </div>
     <div class="panel-section">
@@ -334,7 +393,7 @@
     </div>
   </div>
 
-  <div class="panel" id="costpilot" style="--panel-accent:#4FBF7B;">
+  <div class="panel" id="costpilot" style="--panel-accent:var(--chip-green);">
     <div class="panel-kicker">PROJECT · ARRIVED</div>
     <h2>COSTPILOT</h2>
     <div class="panel-section">
@@ -343,7 +402,7 @@
     </div>
     <div class="panel-section">
       <h3>문제 정의</h3>
-      <p>원가표 양식이 담당자마다 달라 일원화되지 않았습니다. 수기 계산, 동일 로직의 4중 복제, 매직넘버 등 구조적 문제가 다수 있었습니다.</p>
+      <p>원가표 양식이 담당자마다 달라 일원화되지 않았습니다. 수기 계산, 동일 로직의 4중 복제, 매직넘버 등 구조적 문제가 겹쳐 있었습니다.</p>
     </div>
     <div class="panel-section">
       <h3>내 역할 · 기여도</h3>
@@ -374,6 +433,29 @@
     </div>
   </div>
 </main>
+
+<script>
+  // theme toggle
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('mode-toggle');
+    var label = document.getElementById('mode-toggle-text');
+
+    function applyLabel(theme) {
+      label.textContent = theme === 'light' ? 'DARK' : 'LIGHT';
+      btn.setAttribute('aria-label', theme === 'light' ? '다크 모드로 전환' : '라이트 모드로 전환');
+    }
+
+    applyLabel(root.getAttribute('data-theme') || 'dark');
+
+    btn.addEventListener('click', function () {
+      var next = (root.getAttribute('data-theme') || 'dark') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      applyLabel(next);
+    });
+  })();
+</script>
 
 </body>
 </html>
