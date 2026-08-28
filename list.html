@@ -10,6 +10,8 @@
     try {
       var t = localStorage.getItem('theme');
       document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+      var l = localStorage.getItem('lang');
+      if (l === 'en') document.documentElement.setAttribute('lang', 'en');
     } catch (e) {}
   })();
 </script>
@@ -31,7 +33,7 @@
   }
 
   :root[data-theme="light"] {
-    --bg: #F5F6F8;
+    --bg: #F7F2E7;
     --panel: #FFFFFF;
     --rule: #DADFE5;
     --text: #14161A;
@@ -131,7 +133,8 @@
   .header-right {
     display: flex;
     align-items: center;
-    gap: 16px;
+    flex-wrap: wrap;
+    gap: 10px 16px;
   }
 
   .section-label {
@@ -245,34 +248,37 @@
     <button type="button" class="mode-toggle" id="mode-toggle" aria-label="라이트 모드로 전환">
       <span id="mode-toggle-text">LIGHT</span>
     </button>
+    <button type="button" class="mode-toggle" id="lang-toggle" aria-label="Switch to English">
+      <span id="lang-toggle-text">ENG</span>
+    </button>
   </div>
 </header>
 
-<p class="section-label mono">HUB</p>
+<p class="section-label mono" data-i18n="sectionLabel">HUB</p>
 
 <main>
-  <h1>둘러볼 항목을 선택하세요</h1>
+  <h1 data-i18n="h1">둘러볼 항목을 선택하세요</h1>
 
   <div class="hub-grid">
     <a class="hub-tile" href="capabilities.html" style="--tile-accent:var(--chip-cyan);">
       <span class="tile-no mono">01</span>
       <h2 class="tile-title">CAPABILITIES</h2>
-      <p class="tile-summary">AI 활용 방식, 어학·해외 실무 경험, 자격증 등 스킬 레퍼런스입니다.</p>
-      <span class="tile-hint">자세히 보기 →</span>
+      <p class="tile-summary" data-i18n="tile1">AI 활용 방식, 어학·해외 실무 경험, 자격증 등 스킬 레퍼런스입니다.</p>
+      <span class="tile-hint" data-i18n="hint">자세히 보기 →</span>
     </a>
 
     <a class="hub-tile" href="portfolio.html" style="--tile-accent:var(--chip-orange);">
       <span class="tile-no mono">02</span>
       <h2 class="tile-title">PORTFOLIO</h2>
-      <p class="tile-summary">여행업 4년의 실무 경험을 케이스 스터디로 재구성했습니다. COSTPILOT 프로젝트도 여기 있습니다.</p>
-      <span class="tile-hint">자세히 보기 →</span>
+      <p class="tile-summary" data-i18n="tile2">여행업 4년의 실무 경험을 케이스 스터디로 재구성했습니다. COSTPILOT 프로젝트도 여기 있습니다.</p>
+      <span class="tile-hint" data-i18n="hint">자세히 보기 →</span>
     </a>
 
     <a class="hub-tile" href="projects.html" style="--tile-accent:var(--chip-green);">
       <span class="tile-no mono">03</span>
       <h2 class="tile-title">PROJECTS</h2>
-      <p class="tile-summary">AI로 직접 기획하고 만든 데모 서비스 5종입니다. 카드를 클릭하면 바로 사용해볼 수 있습니다.</p>
-      <span class="tile-hint">자세히 보기 →</span>
+      <p class="tile-summary" data-i18n="tile3">AI로 직접 기획하고 만든 데모 서비스 8종입니다. 카드를 클릭하면 바로 사용해볼 수 있습니다.</p>
+      <span class="tile-hint" data-i18n="hint">자세히 보기 →</span>
     </a>
   </div>
 </main>
@@ -310,6 +316,58 @@
       root.setAttribute('data-theme', next);
       try { localStorage.setItem('theme', next); } catch (e) {}
       applyLabel(next);
+    });
+  })();
+
+  // language toggle
+  (function () {
+    var I18N = {
+      ko: {
+        sectionLabel: 'HUB',
+        h1: '둘러볼 항목을 선택하세요',
+        tile1: 'AI 활용 방식, 어학·해외 실무 경험, 자격증 등 스킬 레퍼런스입니다.',
+        tile2: '여행업 4년의 실무 경험을 케이스 스터디로 재구성했습니다. COSTPILOT 프로젝트도 여기 있습니다.',
+        tile3: 'AI로 직접 기획하고 만든 데모 서비스 8종입니다. 카드를 클릭하면 바로 사용해볼 수 있습니다.',
+        hint: '자세히 보기 →',
+        title: "메뉴 | Sungwoo's Project Hub",
+        description: 'Capabilities, Portfolio, Projects 세 영역으로 구성된 김성우의 프로젝트 허브 메뉴입니다. 원하는 항목을 선택해 자세히 살펴보세요.'
+      },
+      en: {
+        sectionLabel: 'HUB',
+        h1: 'Choose where to start',
+        tile1: 'A skills reference covering AI usage, language ability, overseas work experience, and certifications.',
+        tile2: '4 years in the travel industry, reframed as case studies — including the COSTPILOT project.',
+        tile3: '8 demo services planned and built with AI. Click a card to try it right away.',
+        hint: 'Learn more →',
+        title: "Menu | Sungwoo's Project Hub",
+        description: "Menu for Sungwoo's project hub, organized into Capabilities, Portfolio, and Projects. Pick a section to explore."
+      }
+    };
+
+    var root = document.documentElement;
+    var btn = document.getElementById('lang-toggle');
+    var label = document.getElementById('lang-toggle-text');
+
+    function apply(lang) {
+      var dict = I18N[lang];
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var k = el.getAttribute('data-i18n');
+        if (dict[k] != null) el.textContent = dict[k];
+      });
+      document.title = dict.title;
+      var metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute('content', dict.description);
+      root.setAttribute('lang', lang);
+      label.textContent = lang === 'en' ? 'KOR' : 'ENG';
+      btn.setAttribute('aria-label', lang === 'en' ? '한국어로 전환' : 'Switch to English');
+    }
+
+    apply(root.getAttribute('lang') === 'en' ? 'en' : 'ko');
+
+    btn.addEventListener('click', function () {
+      var next = root.getAttribute('lang') === 'en' ? 'ko' : 'en';
+      try { localStorage.setItem('lang', next); } catch (e) {}
+      apply(next);
     });
   })();
 </script>

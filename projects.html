@@ -10,6 +10,8 @@
     try {
       var t = localStorage.getItem('theme');
       document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+      var l = localStorage.getItem('lang');
+      if (l === 'en') document.documentElement.setAttribute('lang', 'en');
     } catch (e) {}
   })();
 </script>
@@ -37,7 +39,7 @@
   }
 
   :root[data-theme="light"] {
-    --bg: #F5F6F8;
+    --bg: #F7F2E7;
     --panel: #FFFFFF;
     --rule: #DADFE5;
     --text: #14161A;
@@ -556,7 +558,7 @@
 
 <header class="board-header">
   <a class="brand" href="index.html">SUNGWOO'S PROJECT HUB</a>
-  <nav class="nav-right" aria-label="주요 메뉴">
+  <nav class="nav-right" aria-label="주요 메뉴" data-i18n-attr="aria-label:navAria">
     <a class="nav-link" href="list.html">HUB</a>
     <a class="nav-link" href="capabilities.html">CAPABILITIES</a>
     <a class="nav-link" href="portfolio.html">PORTFOLIO</a>
@@ -568,20 +570,23 @@
     <button type="button" class="mode-toggle" id="mode-toggle" aria-label="라이트 모드로 전환">
       <span id="mode-toggle-text">LIGHT</span>
     </button>
+    <button type="button" class="mode-toggle" id="lang-toggle" aria-label="Switch to English">
+      <span id="lang-toggle-text">ENG</span>
+    </button>
   </nav>
 </header>
 
 <p class="section-label mono">PROJECTS — SWIPE OR CLICK ▸</p>
-<h1 class="page-title">AI로 만든 데모 프로젝트 8종</h1>
+<h1 class="page-title" data-i18n="pageTitle">AI로 만든 데모 프로젝트 8종</h1>
 
 <main class="carousel-section">
   <div class="carousel-viewport" id="carousel-viewport">
     <div class="carousel-track" id="carousel-track"></div>
   </div>
   <div class="carousel-controls">
-    <button class="car-btn" id="car-prev" type="button" aria-label="이전 프로젝트">‹</button>
+    <button class="car-btn" id="car-prev" type="button" aria-label="이전 프로젝트" data-i18n-attr="aria-label:prevAria">‹</button>
     <div class="car-dots" id="car-dots"></div>
-    <button class="car-btn" id="car-next" type="button" aria-label="다음 프로젝트">›</button>
+    <button class="car-btn" id="car-next" type="button" aria-label="다음 프로젝트" data-i18n-attr="aria-label:nextAria">›</button>
   </div>
 </main>
 
@@ -596,92 +601,155 @@
   var CARD_COLORS = ['var(--chip-cyan)', 'var(--chip-gray)', 'var(--chip-purple)', 'var(--chip-orange)', 'var(--chip-green)', 'var(--chip-pink)'];
   var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  var UI_TEXT = {
+    ko: {
+      clickForDetail: '카드를 클릭하면 상세 정보를 볼 수 있습니다.',
+      hintDemo: '사이트 바로가기 →',
+      hintDetail: '자세히 보기 →',
+      close: '닫기',
+      prevAria: '이전 프로젝트',
+      nextAria: '다음 프로젝트',
+      navAria: '주요 메뉴',
+      pageTitle: 'AI로 만든 데모 프로젝트 8종',
+      cardAria: function (name, status) { return name + ' 상세 보기, 상태 ' + status; },
+      dotAria: function (name) { return name + '로 이동'; },
+      sectionIntro: '소개',
+      sectionLiveDemo: '라이브 데모',
+      sectionProblem: '문제 정의',
+      sectionRole: '내 역할 · 기여도',
+      sectionProcess: '진행 과정 · 의사결정',
+      sectionResult: '결과 · 성과',
+      siteLink: '사이트 바로가기 ↗',
+      title: "AI 데모 프로젝트 8종 | Sungwoo's Project Hub",
+      description: 'Claude Code와 Gemini 등 AI로 직접 기획하고 만든 ICANEAT, MOODY WALK 등 데모 서비스 8종을 소개합니다. 카드를 클릭하면 바로 체험할 수 있습니다.'
+    },
+    en: {
+      clickForDetail: 'Click the card to see details.',
+      hintDemo: 'Visit site →',
+      hintDetail: 'Learn more →',
+      close: 'Close',
+      prevAria: 'Previous project',
+      nextAria: 'Next project',
+      navAria: 'Main menu',
+      pageTitle: '8 AI-Built Demo Projects',
+      cardAria: function (name, status) { return name + ' details, status ' + status; },
+      dotAria: function (name) { return 'Go to ' + name; },
+      sectionIntro: 'Overview',
+      sectionLiveDemo: 'Live Demo',
+      sectionProblem: 'Problem',
+      sectionRole: 'My Role & Contribution',
+      sectionProcess: 'Process & Decisions',
+      sectionResult: 'Result & Impact',
+      siteLink: 'Visit site ↗',
+      title: "8 AI-Built Demo Projects | Sungwoo's Project Hub",
+      description: 'Introducing 8 demo services planned and built with AI — Claude Code, Gemini, and more — including ICANEAT and MOODY WALK. Click a card to try it right away.'
+    }
+  };
+
   var projects = [
     {
       no: '01',
       name: 'ICANEAT',
-      summary: '뭐 먹을지 고민될 때 취향과 상황에 맞춰 메뉴를 추천해주는 서비스입니다.\n카드를 클릭하면 상세 정보를 볼 수 있습니다.',
+      blurb: '뭐 먹을지 고민될 때 취향과 상황에 맞춰 메뉴를 추천해주는 서비스입니다.',
+      blurbEn: "Recommends what to eat based on your taste and situation, for when you can't decide.",
       status: 'arrived',
       isDemo: true,
       detail: {
         description: '뭐 먹을지 고민될 때 취향과 상황에 맞춰 메뉴를 추천해주는 서비스입니다.',
+        descriptionEn: "Recommends what to eat based on your taste and situation, for when you can't decide.",
         demoLink: 'https://icaneat-rust.vercel.app/'
       }
     },
     {
       no: '02',
       name: 'LAND LIVE WEATHER',
-      summary: '세계 랜드마크의 실시간 날씨를 대륙별로 보여주는 서비스입니다.\n카드를 클릭하면 상세 정보를 볼 수 있습니다.',
+      blurb: '세계 랜드마크의 실시간 날씨를 대륙별로 보여주는 서비스입니다.',
+      blurbEn: 'Shows real-time weather for world landmarks, organized by continent.',
       status: 'arrived',
       isDemo: true,
       detail: {
         description: '세계 랜드마크의 실시간 날씨를 대륙별로 보여주는 서비스입니다.',
+        descriptionEn: 'Shows real-time weather for world landmarks, organized by continent.',
         demoLink: 'https://land-live-weather-mew4lagji-sungwoo2.vercel.app/'
       }
     },
     {
       no: '03',
       name: 'NEWS IN TREND',
-      summary: '실시간 인기 검색어 기준으로 뉴스를 검색·정렬해 보여주는 서비스입니다.\n카드를 클릭하면 상세 정보를 볼 수 있습니다.',
+      blurb: '실시간 인기 검색어 기준으로 뉴스를 검색·정렬해 보여주는 서비스입니다.',
+      blurbEn: 'Searches and sorts news based on real-time trending keywords.',
       status: 'arrived',
       isDemo: true,
       detail: {
         description: '실시간 인기 검색어 기준으로 뉴스를 검색·정렬해 보여주는 서비스입니다.',
+        descriptionEn: 'Searches and sorts news based on real-time trending keywords.',
         demoLink: 'https://newsintrend-uxaw.vercel.app/?q=%ED%99%98%EC%9C%A8&sort=sim'
       }
     },
     {
       no: '04',
       name: 'LIVE AIR QUALITY',
-      summary: '대한민국 17개 시도의 통합대기환경지수와 대기오염물질 현황을 등급 색으로 보여주는 서비스입니다.\n카드를 클릭하면 상세 정보를 볼 수 있습니다.',
+      blurb: '대한민국 17개 시도의 통합대기환경지수와 대기오염물질 현황을 등급 색으로 보여주는 서비스입니다.',
+      blurbEn: "Shows South Korea's 17 regions' integrated air-quality index and pollutant levels using color-coded grades.",
       status: 'arrived',
       isDemo: true,
       detail: {
         description: '대한민국 17개 시도의 통합대기환경지수와 대기오염물질 현황을 등급 색으로 보여주는 서비스입니다.',
+        descriptionEn: "Shows South Korea's 17 regions' integrated air-quality index and pollutant levels using color-coded grades.",
         demoLink: 'https://liveairquality-foo3.vercel.app/'
       }
     },
     {
       no: '05',
       name: 'MEMO',
-      summary: 'Supabase를 백엔드로 사용하는 노션 스타일 메모장입니다. 작성, 수정, 삭제와 최신순 정렬을 지원합니다.\n카드를 클릭하면 상세 정보를 볼 수 있습니다.',
+      blurb: 'Supabase를 백엔드로 사용하는 노션 스타일 메모장입니다. 작성, 수정, 삭제와 최신순 정렬을 지원합니다.',
+      blurbEn: 'A Notion-style memo app backed by Supabase, supporting create, edit, delete, and sort-by-latest.',
       status: 'arrived',
       isDemo: true,
       detail: {
         description: 'Supabase를 백엔드로 사용하는 노션 스타일 메모장입니다. 작성, 수정, 삭제와 최신순 정렬을 지원합니다.',
+        descriptionEn: 'A Notion-style memo app backed by Supabase, supporting create, edit, delete, and sort-by-latest.',
         demoLink: 'https://memo-xi-lovat.vercel.app/'
       }
     },
     {
       no: '06',
       name: '물 한 잔',
-      summary: '하루 물 섭취량을 8잔 기준으로 기록하는 PWA 카운터입니다. 홈 화면에 앱으로 설치할 수 있습니다.\n카드를 클릭하면 상세 정보를 볼 수 있습니다.',
+      nameEn: 'A GLASS OF WATER',
+      blurb: '하루 물 섭취량을 8잔 기준으로 기록하는 PWA 카운터입니다. 홈 화면에 앱으로 설치할 수 있습니다.',
+      blurbEn: 'A PWA counter that tracks daily water intake against an 8-glass goal. Installable to your home screen as an app.',
       status: 'arrived',
       isDemo: true,
       detail: {
         description: '하루 물 섭취량을 8잔 기준으로 기록하는 PWA 카운터입니다. 홈 화면에 앱으로 설치할 수 있습니다.',
+        descriptionEn: 'A PWA counter that tracks daily water intake against an 8-glass goal. Installable to your home screen as an app.',
         demoLink: 'https://doaq3210-max.github.io/water/'
       }
     },
     {
       no: '07',
       name: 'MBTI 공부법 연구소',
-      summary: 'MBTI 유형별 공부법을 소개하고, 10문항 자가진단으로 나에게 맞는 공부 성향 그룹을 알려주는 콘텐츠 사이트입니다.\n카드를 클릭하면 상세 정보를 볼 수 있습니다.',
+      nameEn: 'MBTI STUDY LAB',
+      blurb: 'MBTI 유형별 공부법을 소개하고, 10문항 자가진단으로 나에게 맞는 공부 성향 그룹을 알려주는 콘텐츠 사이트입니다.',
+      blurbEn: 'Introduces study methods by MBTI type and uses a 10-question self-check to find your study-style group.',
       status: 'arrived',
       isDemo: true,
       detail: {
         description: 'MBTI 유형별 공부법을 소개하고, 10문항 자가진단 퀴즈로 나에게 맞는 공부 성향 그룹(NT·NF·SJ·SP)을 알려주는 콘텐츠 사이트입니다.',
+        descriptionEn: 'Introduces study methods by MBTI type and uses a 10-question self-check quiz to identify your study-style group (NT · NF · SJ · SP).',
         demoLink: 'https://mbti-test-kappa-two.vercel.app/'
       }
     },
     {
       no: '08',
       name: 'MOODY WALK',
-      summary: '산책 중 사진을 기록하면 Gemini가 분위기에 맞는 캡션을 달아주는 감성 산책 기록 PWA입니다.\n카드를 클릭하면 상세 정보를 볼 수 있습니다.',
+      blurb: '산책 중 사진을 기록하면 Gemini가 분위기에 맞는 캡션을 달아주는 감성 산책 기록 PWA입니다.',
+      blurbEn: 'A sentimental walk-journaling PWA — snap a photo on your walk and Gemini adds a caption that matches the mood.',
       status: 'arrived',
       isDemo: true,
       detail: {
         description: 'Vite + React로 만든 PWA로, 산책 중 남긴 사진과 위치를 Supabase에 기록하고 Gemini가 사진 분위기에 어울리는 캡션을 자동으로 붙여줍니다.',
+        descriptionEn: 'A PWA built with Vite + React that logs your walk photos and location to Supabase, while Gemini automatically writes a caption matching each photo’s mood.',
         demoLink: 'https://moody-walk-app-pgfa.vercel.app/',
         stack: ['Vite', 'React', 'Supabase', 'Gemini API', 'PWA']
       }
@@ -694,30 +762,37 @@
   var scrim = document.getElementById('scrim');
   var openCard = null;
   var placeholder = null;
+  var LANG = document.documentElement.getAttribute('lang') === 'en' ? 'en' : 'ko';
 
   function section(heading, html) {
     if (!html) return '';
     return '<div class="detail-section"><h3>' + heading + '</h3>' + html + '</div>';
   }
 
-  function buildDetailHTML(project) {
+  function buildDetailHTML(project, lang) {
+    var t = UI_TEXT[lang];
     var d = project.detail;
+    var description = lang === 'en' ? (d.descriptionEn || d.description) : d.description;
     var html = '';
-    html += section('소개', d.description ? '<p>' + d.description + '</p>' : '');
-    html += section('라이브 데모', d.demoLink ? '<p><a class="detail-live-link" href="' + d.demoLink + '" target="_blank" rel="noopener">사이트 바로가기 ↗</a></p>' : '');
-    html += section('문제 정의', d.problem ? '<p>' + d.problem + '</p>' : '');
-    html += section('내 역할 · 기여도', d.role ? '<p>' + d.role + '</p>' : '');
+    html += section(t.sectionIntro, description ? '<p>' + description + '</p>' : '');
+    html += section(t.sectionLiveDemo, d.demoLink ? '<p><a class="detail-live-link" href="' + d.demoLink + '" target="_blank" rel="noopener">' + t.siteLink + '</a></p>' : '');
+    html += section(t.sectionProblem, d.problem ? '<p>' + d.problem + '</p>' : '');
+    html += section(t.sectionRole, d.role ? '<p>' + d.role + '</p>' : '');
     if (d.process && d.process.length) {
-      html += section('진행 과정 · 의사결정', '<ul>' + d.process.map(function (p) { return '<li>' + p + '</li>'; }).join('') + '</ul>');
+      html += section(t.sectionProcess, '<ul>' + d.process.map(function (p) { return '<li>' + p + '</li>'; }).join('') + '</ul>');
     }
-    html += section('결과 · 성과', d.result ? '<p>' + d.result + '</p>' : '');
+    html += section(t.sectionResult, d.result ? '<p>' + d.result + '</p>' : '');
     if (d.stack && d.stack.length) {
       html += '<div class="detail-stack">' + d.stack.map(function (s) { return '<span class="stack-tag">' + s + '</span>'; }).join('') + '</div>';
     }
     return html;
   }
 
-  function buildCard(project, index) {
+  function buildCard(project, index, lang) {
+    var t = UI_TEXT[lang];
+    var name = (lang === 'en' && project.nameEn) ? project.nameEn : project.name;
+    var blurb = (lang === 'en' ? project.blurbEn : project.blurb) || project.blurb;
+    var summary = blurb + '\n' + t.clickForDetail;
     var color = CARD_COLORS[index % CARD_COLORS.length];
     var card = document.createElement('article');
     card.className = 'carousel-card';
@@ -726,7 +801,7 @@
     card.tabIndex = 0;
 
     var statusHTML = '<span class="status status-' + project.status + '"><span class="dot"></span>' + STATUS_LABEL[project.status] + '</span>';
-    var hintText = project.isDemo ? '사이트 바로가기 →' : '자세히 보기 →';
+    var hintText = project.isDemo ? t.hintDemo : t.hintDetail;
 
     var faceHTML =
       '<div class="card-face">' +
@@ -734,8 +809,8 @@
           '<span class="card-no mono">' + project.no + '</span>' +
           statusHTML +
         '</div>' +
-        '<h2 class="card-title">' + project.name + '</h2>' +
-        '<p class="card-summary">' + project.summary + '</p>' +
+        '<h2 class="card-title">' + name + '</h2>' +
+        '<p class="card-summary">' + summary + '</p>' +
         '<span class="card-hint">' + hintText + '</span>' +
       '</div>';
 
@@ -744,7 +819,7 @@
     card.setAttribute('role', 'button');
     card.setAttribute('aria-haspopup', 'dialog');
     card.setAttribute('aria-expanded', 'false');
-    card.setAttribute('aria-label', project.name + ' 상세 보기, 상태 ' + STATUS_LABEL[project.status]);
+    card.setAttribute('aria-label', t.cardAria(name, STATUS_LABEL[project.status]));
 
     var detailWrap = document.createElement('div');
     detailWrap.className = 'card-detail';
@@ -752,13 +827,13 @@
       '<div class="detail-header">' +
         '<div class="detail-title-group">' +
           '<span class="detail-no mono">' + project.no + '</span>' +
-          '<h2 class="detail-title">' + project.name + '</h2>' +
+          '<h2 class="detail-title">' + name + '</h2>' +
           statusHTML +
         '</div>' +
-        '<button class="detail-close" type="button" aria-label="닫기">✕</button>' +
+        '<button class="detail-close" type="button" aria-label="' + t.close + '">✕</button>' +
       '</div>' +
       '<div class="detail-rule"></div>' +
-      '<div class="detail-body">' + buildDetailHTML(project) + '</div>';
+      '<div class="detail-body">' + buildDetailHTML(project, lang) + '</div>';
     card.appendChild(detailWrap);
 
     card.addEventListener('click', function (e) {
@@ -781,21 +856,38 @@
     return card;
   }
 
-  projects.forEach(function (project, i) {
-    track.appendChild(buildCard(project, i));
+  var dots = [];
 
-    var dot = document.createElement('button');
-    dot.className = 'car-dot';
-    dot.type = 'button';
-    dot.setAttribute('aria-label', project.name + '로 이동');
-    dot.addEventListener('click', function () {
-      var cards = track.querySelectorAll('.carousel-card');
-      cards[i].scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
+  function render(lang) {
+    if (openCard) {
+      document.body.classList.remove('modal-open');
+      scrim.hidden = true;
+      scrim.classList.remove('show');
+      document.removeEventListener('keydown', onKeydown);
+      openCard = null;
+      placeholder = null;
+    }
+    track.innerHTML = '';
+    dotsWrap.innerHTML = '';
+
+    projects.forEach(function (project, i) {
+      track.appendChild(buildCard(project, i, lang));
+
+      var name = (lang === 'en' && project.nameEn) ? project.nameEn : project.name;
+      var dot = document.createElement('button');
+      dot.className = 'car-dot';
+      dot.type = 'button';
+      dot.setAttribute('aria-label', UI_TEXT[lang].dotAria(name));
+      dot.addEventListener('click', function () {
+        var cards = track.querySelectorAll('.carousel-card');
+        cards[i].scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
+      });
+      dotsWrap.appendChild(dot);
     });
-    dotsWrap.appendChild(dot);
-  });
 
-  var dots = dotsWrap.querySelectorAll('.car-dot');
+    dots = Array.prototype.slice.call(dotsWrap.querySelectorAll('.car-dot'));
+    updateActiveDot();
+  }
 
   function updateActiveDot() {
     var cards = Array.prototype.slice.call(track.querySelectorAll('.carousel-card'));
@@ -810,12 +902,13 @@
     dots.forEach(function (d, i) { d.classList.toggle('active', i === closest); });
   }
 
+  render(LANG);
+
   var scrollTimer = null;
   viewport.addEventListener('scroll', function () {
     clearTimeout(scrollTimer);
     scrollTimer = setTimeout(updateActiveDot, 80);
   });
-  updateActiveDot();
 
   document.getElementById('car-prev').addEventListener('click', function () {
     viewport.scrollBy({ left: -320, behavior: REDUCED ? 'auto' : 'smooth' });
@@ -933,6 +1026,47 @@
       root.setAttribute('data-theme', next);
       try { localStorage.setItem('theme', next); } catch (e) {}
       applyLabel(next);
+    });
+  })();
+
+  // language toggle
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('lang-toggle');
+    var label = document.getElementById('lang-toggle-text');
+
+    function applyStatic(lang) {
+      var t = UI_TEXT[lang];
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var k = el.getAttribute('data-i18n');
+        if (t[k] != null) el.textContent = t[k];
+      });
+      document.querySelectorAll('[data-i18n-attr]').forEach(function (el) {
+        el.getAttribute('data-i18n-attr').split(';').forEach(function (pair) {
+          var parts = pair.split(':');
+          if (t[parts[1]] != null) el.setAttribute(parts[0], t[parts[1]]);
+        });
+      });
+      document.title = t.title;
+      var metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute('content', t.description);
+    }
+
+    function apply(lang) {
+      root.setAttribute('lang', lang);
+      applyStatic(lang);
+      render(lang);
+      label.textContent = lang === 'en' ? 'KOR' : 'ENG';
+      btn.setAttribute('aria-label', lang === 'en' ? '한국어로 전환' : 'Switch to English');
+    }
+
+    applyStatic(LANG);
+    label.textContent = LANG === 'en' ? 'KOR' : 'ENG';
+
+    btn.addEventListener('click', function () {
+      var next = root.getAttribute('lang') === 'en' ? 'ko' : 'en';
+      try { localStorage.setItem('lang', next); } catch (e) {}
+      apply(next);
     });
   })();
 </script>

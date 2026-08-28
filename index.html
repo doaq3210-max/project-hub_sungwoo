@@ -10,6 +10,8 @@
     try {
       var t = localStorage.getItem('theme');
       document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+      var l = localStorage.getItem('lang');
+      if (l === 'en') document.documentElement.setAttribute('lang', 'en');
     } catch (e) {}
   })();
 </script>
@@ -28,7 +30,7 @@
   }
 
   :root[data-theme="light"] {
-    --bg: #F5F6F8;
+    --bg: #F7F2E7;
     --panel: #FFFFFF;
     --rule: #DADFE5;
     --text: #14161A;
@@ -111,7 +113,9 @@
     right: 32px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px 16px;
   }
 
   .clock {
@@ -460,6 +464,9 @@
     <button type="button" class="mode-toggle" id="mode-toggle" aria-label="라이트 모드로 전환">
       <span id="mode-toggle-text">LIGHT</span>
     </button>
+    <button type="button" class="mode-toggle" id="lang-toggle" aria-label="Switch to English">
+      <span id="lang-toggle-text">ENG</span>
+    </button>
   </div>
 
   <main class="frame">
@@ -473,9 +480,9 @@
 
     <div class="rule"></div>
 
-    <p class="tagline">여행업 4년, 문제를 시스템으로 옮기는 기획자</p>
+    <p class="tagline" data-i18n="tagline">여행업 4년, 문제를 시스템으로 옮기는 기획자</p>
 
-    <p class="career">
+    <p class="career" data-i18n-html="career">
       <span class="org">HANATOUR</span> · 동남아상품팀(태국) MD · 4년<br>
       원가관리 / 신규 상품 기획
     </p>
@@ -485,9 +492,9 @@
     </a>
 
     <footer class="contact">
-      <button type="button" id="email-copy" aria-label="이메일 주소 복사">
+      <button type="button" id="email-copy" aria-label="이메일 주소 복사" data-i18n-attr="aria-label:copyEmail">
         doaq3210@gmail.com
-        <span class="copy-toast" id="copy-toast">복사됨</span>
+        <span class="copy-toast" id="copy-toast" data-i18n="copied">복사됨</span>
       </button>
       <!-- TODO: 실제 GitHub / LinkedIn URL로 교체 -->
       <a href="#" target="_blank" rel="noopener">GITHUB</a>
@@ -547,6 +554,64 @@
     });
   })();
 
+  // language toggle
+  (function () {
+    var I18N = {
+      ko: {
+        tagline: '여행업 4년, 문제를 시스템으로 옮기는 기획자',
+        career: '<span class="org">HANATOUR</span> · 동남아상품팀(태국) MD · 4년<br>원가관리 / 신규 상품 기획',
+        copyEmail: '이메일 주소 복사',
+        copied: '복사됨',
+        title: "Sungwoo's Project Hub | 여행업 기획자 김성우 포트폴리오",
+        description: '하나투어 동남아상품팀에서 4년간 원가관리·상품기획을 담당한 기획자 김성우의 포트폴리오입니다. AI 활용 사례와 실무 프로젝트를 소개합니다.'
+      },
+      en: {
+        tagline: '4 years in travel, turning problems into systems',
+        career: '<span class="org">HANATOUR</span> · Southeast Asia Product Team (Thailand) MD · 4 yrs<br>Cost Management / New Product Planning',
+        copyEmail: 'Copy email address',
+        copied: 'Copied',
+        title: "Sungwoo's Project Hub | Portfolio of Sungwoo, Travel-Industry Planner",
+        description: "Portfolio of Sungwoo, a planner who spent 4 years on cost management and product planning at Hanatour's Southeast Asia team. Featuring AI-driven work and hands-on projects."
+      }
+    };
+
+    var root = document.documentElement;
+    var btn = document.getElementById('lang-toggle');
+    var label = document.getElementById('lang-toggle-text');
+
+    function apply(lang) {
+      var dict = I18N[lang];
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var k = el.getAttribute('data-i18n');
+        if (dict[k] != null) el.textContent = dict[k];
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+        var k = el.getAttribute('data-i18n-html');
+        if (dict[k] != null) el.innerHTML = dict[k];
+      });
+      document.querySelectorAll('[data-i18n-attr]').forEach(function (el) {
+        el.getAttribute('data-i18n-attr').split(';').forEach(function (pair) {
+          var parts = pair.split(':');
+          if (dict[parts[1]] != null) el.setAttribute(parts[0], dict[parts[1]]);
+        });
+      });
+      document.title = dict.title;
+      var metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute('content', dict.description);
+      root.setAttribute('lang', lang);
+      label.textContent = lang === 'en' ? 'KOR' : 'ENG';
+      btn.setAttribute('aria-label', lang === 'en' ? '한국어로 전환' : 'Switch to English');
+    }
+
+    apply(root.getAttribute('lang') === 'en' ? 'en' : 'ko');
+
+    btn.addEventListener('click', function () {
+      var next = root.getAttribute('lang') === 'en' ? 'ko' : 'en';
+      try { localStorage.setItem('lang', next); } catch (e) {}
+      apply(next);
+    });
+  })();
+
   // Seoul clock
   (function () {
     var el = document.getElementById('clock-text');
@@ -569,7 +634,7 @@
   (function () {
     var btn = document.getElementById('email-copy');
     var toast = document.getElementById('copy-toast');
-    var email = 'sungwoo@email.com';
+    var email = 'doaq3210@gmail.com';
     var timer = null;
 
     btn.addEventListener('click', function () {
