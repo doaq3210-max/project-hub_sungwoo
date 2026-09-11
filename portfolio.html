@@ -167,8 +167,27 @@
     line-height: 1.75;
     color: var(--text-dim);
     max-width: 70ch;
-    margin: 0 0 40px;
+    margin: 0 0 24px;
   }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 40px;
+    padding: 10px 18px;
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: opacity 80ms ease-out;
+  }
+
+  .hero-cta:hover,
+  .hero-cta:focus-visible { opacity: 0.85; }
 
   .panel {
     --panel-accent: var(--accent);
@@ -319,6 +338,7 @@
 <main>
   <h1 data-i18n="h1">여행업 4년, 문제를 시스템으로 옮긴 기록</h1>
   <p class="lede" data-i18n="lede">하나투어 동남아상품팀에서 태국 지역 상품 기획부터 원가관리, 협력사 협상, 판매전략 수립, 운영관리까지 전 과정을 담당하며 만든 성과와, 그 경험이 어떻게 COSTPILOT이라는 실제 도구로 이어졌는지를 담았습니다.</p>
+  <a class="hero-cta mono" href="https://portfolio-site-rho-weld-47.vercel.app/" target="_blank" rel="noopener" data-i18n="ctaPortfolio">포트폴리오 사이트 바로가기 ↗</a>
 
   <div class="panel" style="--panel-accent:var(--chip-cyan);">
     <div class="panel-kicker">PROJECT · PROCESS INNOVATION</div>
@@ -466,6 +486,7 @@
     var I18N = {
       ko: {
         sectionLabel: 'PORTFOLIO',
+        ctaPortfolio: '포트폴리오 사이트 바로가기 ↗',
         h1: '여행업 4년, 문제를 시스템으로 옮긴 기록',
         lede: '하나투어 동남아상품팀에서 태국 지역 상품 기획부터 원가관리, 협력사 협상, 판매전략 수립, 운영관리까지 전 과정을 담당하며 만든 성과와, 그 경험이 어떻게 COSTPILOT이라는 실제 도구로 이어졌는지를 담았습니다.',
         labelProblem: '문제 정의',
@@ -509,6 +530,7 @@
       },
       en: {
         sectionLabel: 'PORTFOLIO',
+        ctaPortfolio: 'Visit Portfolio Site ↗',
         h1: '4 Years in Travel — Turning Problems into Systems',
         lede: "Everything from product planning for Thailand at Hanatour's Southeast Asia team to cost management, partner negotiations, sales strategy, and operations — and how that experience led to a real tool, COSTPILOT.",
         labelProblem: 'Problem',
